@@ -1,16 +1,17 @@
-#!/home/postulka/anaconda3/envs/gmnn_gpu/bin/python
+#!/home/postulka/programs/anaconda3/bin/python
 
 #this script load .npz file with geometric data and computes stde for energy and forces for ecah structure
 import numpy as np
+from ase import Atoms
 
 from gmnn.calculators import ASECalculator
 
-def compute_stde(data_file, output_file='stde_results.txt', model_path, config_file):
+def compute_stde(data_file, model_path, config_file, output_file='stde_results.txt'):
     HARTREE_TO_KCALMOL = 627.51
 #loadd data
     data = np.load(data_file, allow_pickle=True)
 
-    R, Z, N, C, E = arrays["R"], arrays["Z"], arrays["N"], arrays["C"], arrays["E"]
+    R, Z, N, C, E = data["R"], data["Z"], data["N"], data["C"], data["E"]
 
 #loop through the structures
     with open(output_file, 'w') as f_out:
@@ -34,5 +35,5 @@ def compute_stde(data_file, output_file='stde_results.txt', model_path, config_f
             f_out.write(f"{i} {natom} {stde_e} {stde_f}\n") 
 
 if __name__ == "__main__":
-    data_file = 'data.npz'
-    compute_stde(data_file, output_file='stde_results.txt',f'/home/postulka/HF_BROKEN_SYMMETRY/TRAIN/acetaldehyde/models/move_size_7500',f'pes_move_size_7500.txt')
+    data_file = '../../moved_filtered_clusters.npz'
+    compute_stde(data_file, f'/home/postulka/HF_BROKEN_SYMMETRY/TRAIN/acetaldehyde/models/move_size_7500', f'pes_move_size_7500.txt', output_file='stde_results.txt')
