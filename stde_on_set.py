@@ -35,7 +35,7 @@ def compute_stde_for_atoms(calc, atoms):
 def mean_diff_force(atoms, calc, ref_forces):
             forces_calc = atoms.get_forces()*HARTREE_TO_KCALMOL
             diff_forces = abs(ref_forces - forces_calc)
-            f_mean = np.abs(np.array(forces_calc)).mean()
+            f_mean = np.array(diff_forces).mean()
             return f_mean
 
 
