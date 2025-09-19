@@ -30,19 +30,19 @@ def label(geom_file, workdir, template_dir, submit_file="submit.sh", job_name="l
     return calc_dir
 
 def are_calculations_running(job_name):
-    output = os.popen('qstat -u postulka').read()
+    output = os.popen('qstat -xml -u postulka').read()
     return job_name in output
 
 def wait_for_calculations(job_name):
     while are_calculations_running(job_name):
-        time.sleep(10)
+        time.sleep(60)
     print("All calculations are finished. Proceeding...")
 
 if __name__ == "__main__":
     workdir = "./calculations"
     template_dir = "./template"
     submit_file = "submit.sh"   # Name of the job script inside template
-    job_name = "lab_al"
+    job_name = "labeling_al"
 
     os.makedirs(workdir, exist_ok=True)
 
