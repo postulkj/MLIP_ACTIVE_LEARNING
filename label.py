@@ -1,59 +1,53 @@
-
+#!/usr/bin/env python3
 # Labeling script for calculation of molecular energy and gradients.
 
 import os
-import tempfile
-from ase import Atoms
-from ase.io import read, write
+import time
 import glob
+import shutil
+from ase.io import read, write
 
-
-#labeling function taking *xyz file, working directory as an input
-#calculating energy and gradients with external program in a temporary directory
-def label(geom_file, workdir, submit_file,job_name="labeling_al"):
-    # Read the geometry from the input file
+def label(geom_file, workdir, template_dir, submit_file="submit.sh", job_name="labeling_al"):
+    # Read geometry
     atoms = read(geom_file)
 
-    # Create a directory for the calculation, based on the file name
+    # Create calculation directory
     calc_dir = os.path.join(workdir, os.path.splitext(os.path.basename(geom_file))[0])
-    os.makedirs(calc_dir, exist_ok=True)
+    shutil.copytree(template_dir, calc_dir, dirs_exist_ok=True)
 
-    # Copy the geometry file and sumbit file to the calculation directory
-    temp_geom_file = os.path.join(calc_dir, os.path.basename(geom_file))
-    temp_submit_file = os.path.join(calc_dir, os.path.basename(submit_file))
-    write(temp_geom_file, atoms)
-    os.system(f'cp {submit_file} {temp_submit_file}')
-    # qsub command to submit the job
-    os.system(f'cd {calc_dir} && qsub -V -cwd -q $cpu -N {job_name} {temp_submit_file} && cd -')
+    # Write geometry file into calc_dir
+    geom_dst = os.path.join(calc_dir, os.path.basename(geom_file))
+    write(geom_dst, atoms)
 
-    return
+    # Check that the specified submit file is in the template copy
+    submit_path = os.path.join(calc_dir, submit_file)
+    if not os.path.exists(submit_path):
+        raise FileNotFoundError(f"{submit_file} not found in template: {submit_path}")
 
-# Function to check if any calculation "labelling al" is running
+    # Submit the job
+    os.system(f'cd {calc_dir} && qsub -V -cwd -q $cpu -N {job_name} {submit_file}')
+
+    return calc_dir
+
 def are_calculations_running(job_name):
-    # Check the output of the qstat command for any job with the name "labeling_al"
-    output = os.popen('qstat -u $USER').read()
+    output = os.popen('qstat -u postulka').read()
     return job_name in output
 
-# Function to wait until all calculations are finished
 def wait_for_calculations(job_name):
     while are_calculations_running(job_name):
-        time.sleep(60)  # Wait for 1 minute before checking again
+        time.sleep(10)
     print("All calculations are finished. Proceeding...")
-    return
 
-# Example usage
 if __name__ == "__main__":
+    workdir = "./calculations"
+    template_dir = "./template"
+    submit_file = "submit.sh"   # Name of the job script inside template
+    job_name = "lab_al"
+
+    os.makedirs(workdir, exist_ok=True)
+
     for geom_file in glob.glob("GEOMS/*.xyz"):
-        workdir = "./calculations"   # Working directory for calculations
-        submit_file = "embedding.sh"    # Job submission script
-        job_name = "labeling_al"  # Job name for the scheduler
+        label(geom_file, workdir, template_dir, submit_file, job_name)
 
-        # Ensure the working directory exists
-        os.makedirs(workdir, exist_ok=True)
-
-        # Label the geometry
-        result_atoms = label(geom_file, workdir, submit_file)
-
-    # Wait for all calculations to finish before proceeding
     wait_for_calculations(job_name)
-    print("All calculations are finished. Proceeding...")
+
