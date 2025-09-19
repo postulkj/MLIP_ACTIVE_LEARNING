@@ -5,6 +5,7 @@ import os
 import tempfile
 from ase import Atoms
 from ase.io import read, write
+import glob
 
 
 #labeling function taking *xyz file, working directory as an input
@@ -42,26 +43,17 @@ def wait_for_calculations(job_name):
 
 # Example usage
 if __name__ == "__main__":
-    geom_file = "molecule.xyz"  # Input geometry file
-    workdir = "./calculations"   # Working directory for calculations
-    submit_file = "embedding.sh"    # Job submission script
-    job_name = "labeling_al"  # Job name for the scheduler
+    for geom_file in glob.glob("GEOMS/*.xyz"):
+        workdir = "./calculations"   # Working directory for calculations
+        submit_file = "embedding.sh"    # Job submission script
+        job_name = "labeling_al"  # Job name for the scheduler
 
-    # Ensure the working directory exists
-    os.makedirs(workdir, exist_ok=True)
+        # Ensure the working directory exists
+        os.makedirs(workdir, exist_ok=True)
 
-    # Label the geometry
-    result_atoms = label(geom_file, workdir, submit_file)
+        # Label the geometry
+        result_atoms = label(geom_file, workdir, submit_file)
 
     # Wait for all calculations to finish before proceeding
     wait_for_calculations(job_name)
-
-    # After calculations are done, read results (this part depends on how results are stored)
-    # For example, if results are stored in a file named 'result.xyz' in the calc_dir:
-    result_file = os.path.join(workdir, os.path.splitext(os.path.basename(geom_file))[0], 'result.xyz')
-    if os.path.exists(result_file):
-        result_atoms = read(result_file)
-        print("Energy:", result_atoms.get_potential_energy())
-        print("Forces:", result_atoms.get_forces())
-    else:
-        print("Result file not found.")
+    print("All calculations are finished. Proceeding...")
