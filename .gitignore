@@ -1,6 +1,5 @@
 stde_results.txt
 GEOMS
 calculations
-data/raw/*
-data/labeled/*
-data/failed/*
+data/*
+!data/.gitkeep
