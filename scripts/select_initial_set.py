@@ -24,7 +24,7 @@ def select_initial_set(raw_dir, n_select, file_pattern="*.xyz"):
 
 if __name__ == "__main__":
     RAW_DIR = "data/raw"
-    N_SELECT = 500
+    N_SELECT = 10
 
     selected_files = select_initial_set(RAW_DIR, N_SELECT)
     print(f"Selected {len(selected_files)} files:")
