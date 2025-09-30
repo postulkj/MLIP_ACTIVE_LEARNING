@@ -39,14 +39,14 @@ def wait_for_calculations(job_name):
     print("All calculations are finished. Proceeding...")
 
 if __name__ == "__main__":
-    workdir = "./calculations"
+    workdir = "./data/labeled"
     template_dir = "./template"
     submit_file = "submit.sh"   # Name of the job script inside template
     job_name = "labeling_al"
 
     os.makedirs(workdir, exist_ok=True)
 
-    for geom_file in glob.glob("GEOMS/*.xyz"):
+    for geom_file in glob.glob("data/raw/*.xyz"):
         label(geom_file, workdir, template_dir, submit_file, job_name)
 
     wait_for_calculations(job_name)
