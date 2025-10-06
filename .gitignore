@@ -3,3 +3,4 @@ GEOMS
 calculations
 data/*
 !data/.gitkeep
+scripts/__pycache__/
