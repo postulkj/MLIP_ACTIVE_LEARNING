@@ -44,7 +44,7 @@ def save_npz(selected_files, output_name="selected_initial_set.npz", n_maxat=210
     N = np.zeros((n_data, ), dtype=np.int64)
 
     for i_data, filepath in enumerate(selected_files):
-        print(f"{i_data+1}/{n_data}: {filepath}")
+        #print(f"{i_data+1}/{n_data}: {filepath}")
         atoms = read(filepath)
         R[i_data, :len(atoms), :] = atoms.get_positions()
         F[i_data, :len(atoms), :] = atoms.get_forces() * 627.51
