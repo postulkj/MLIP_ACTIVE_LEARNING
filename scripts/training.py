@@ -42,19 +42,17 @@ def prep_set(directory, n_maxat, dataset_name='dataset.npz'):
 
     np.savez(dataset_name, R=R, F=F, E=E, C=C, Z=Z, N=N)
 
-#function to prepare pes_training.txt before running this script, based on previous .txt file 
-def write_pes_training_file(filename='pes_training.txt', params: dict):
+def write_pes_training_file(params: dict, filename='pes_training.txt'):
     """
     Write a pes_training.txt file with given parameters.
 
     Args:
-        filename: output file path
         params: dict with key -> value, written as '--key=value'
+        filename: output file path (defaults to 'pes_training.txt')
     """
     with open(filename, "w") as f:
         for key, value in params.items():
             f.write(f"--{key}={value}\n")
-
 
 
 if __name__ == "__main__":
