@@ -4,3 +4,4 @@ calculations
 data/*
 !data/.gitkeep
 scripts/__pycache__/
+train_*.sh
