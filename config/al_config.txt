@@ -1,0 +1,5 @@
+--data_path=data
+--initial_n=500
+--n_max_atoms=210
+--initial_npz=data/initial_set.npz
+
