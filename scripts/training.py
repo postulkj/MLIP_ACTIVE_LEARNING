@@ -28,7 +28,7 @@ def prep_set(directory, n_maxat, dataset_name='dataset.npz'):
     N = np.zeros((n_data, ), dtype=np.int64)                # number of atoms
 
     # loop over all subdirectory/final*xyz, using glob
-    for i, filepath in enumerate(glob.glob(os.path.join(directory, '*/final*.xyz'))):
+    for i, filepath in enumerate(glob.glob(os.path.join(directory, '*/results.xyz'))):
         atoms = read(filepath)
         natoms = len(atoms)
 
