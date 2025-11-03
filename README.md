@@ -12,6 +12,7 @@ MLIP_ACTIVE_LEARNING/
 ├── data/
 │   ├── raw/         # Initial geometries (XYZ etc.)
 │   ├── labeled/     # Successfully labeled/calculated results
+│   ├── checked/     # Points after validity check (to be added to the training set)
 │   └── failed/      # Failed or rejected calculations
 │
 ├── scripts/
