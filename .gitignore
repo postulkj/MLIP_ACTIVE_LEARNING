@@ -4,4 +4,8 @@ calculations
 data/*
 !data/.gitkeep
 scripts/__pycache__/
-train_*.sh
+train_*.sh*
+control.err
+control.out
+models
+temp_config.txt
