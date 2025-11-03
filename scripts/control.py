@@ -4,6 +4,7 @@ import label
 import os
 import result_manager as rm
 import training as trn
+import shutil
 
 def load_config(path: str) -> dict:
     cfg = {}
@@ -18,6 +19,7 @@ def load_config(path: str) -> dict:
     return cfg
 
 def submit_training_job(config_file: str, script_file: str, job_name: str = "train_job"):
+    shutil.copy(config_file, "temp_config.txt")
     """
     Submit a training job to the queue via qsub.
     
@@ -27,11 +29,10 @@ def submit_training_job(config_file: str, script_file: str, job_name: str = "tra
     - job_name: Name of the job as it appears in the job scheduler.
     """
     # Ensure the job script is created
-    job_script = f"""
-#!/bin/bash
+    job_script = f"""#!/bin/bash
 
 # Run the training script
-./{script_file} --config {config_file}
+./{script_file}
     """
     
     # Save the job script to a file
