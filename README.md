@@ -12,7 +12,6 @@ MLIP_ACTIVE_LEARNING/
 ├── data/
 │   ├── raw/         # Initial geometries (XYZ etc.)
 │   ├── labeled/     # Successfully labeled/calculated results
-�~T~B   �~T~\�~T~@�~T~@ labeled/     # Successfully labeled/calculated
 │   └── failed/      # Failed or rejected calculations
 │
 ├── scripts/
