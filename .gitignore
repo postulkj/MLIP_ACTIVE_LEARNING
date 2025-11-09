@@ -9,3 +9,4 @@ control.err
 control.out
 models
 temp_config.txt
+read_data.py
