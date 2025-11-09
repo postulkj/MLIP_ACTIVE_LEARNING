@@ -85,4 +85,9 @@ if __name__ == "__main__":
         script_file="scripts/submit_train.py",  # path to the Python training script
         job_name="train_al"  # job name for qsub
     )
+    
+
+    label.wait_for_calculations('train_al')
+
+    print("Training done")
 
